@@ -1,0 +1,185 @@
+---
+import ImageComp from "../utils/ImageComp.astro";
+
+export interface WhyUsBullet {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+export interface WhyUsButton {
+  text: string;
+  href: string;
+}
+
+export interface WhyUsImage {
+  src: string;
+  alt: string;
+}
+
+export interface WhyUsContent {
+  upperHeading?: string;
+  title?: string;
+  description?: string;
+  descriptions?: string[];
+  button?: WhyUsButton;
+  image?: WhyUsImage;
+  badgeText?: string;
+  bullets?: WhyUsBullet[];
+}
+
+export interface Props {
+  content?: WhyUsContent;
+  data?: WhyUsContent;
+}
+
+const defaultContent: WhyUsContent = {
+  upperHeading: "WHY CHOOSE PILOT INSTRUCTIONAL CENTER",
+  title: "High-Integrity Flight Training at New Century AirCenter",
+  description:
+    "At Pilot Instructional Center, we combine experienced instruction, modern training methods, and a supportive environment to help you achieve your aviation goals.",
+  descriptions: [
+    "New Century AirCenter (KIXD) is one of the most active training airports in the Kansas City area, offering an ideal environment for student pilots.",
+    "Our instruction-first approach allows students to progress efficiently with experienced instructors who are invested in your success.",
+  ],
+  button: {
+    text: "Start Training",
+    href: "/contact/",
+  },
+  image: {
+    src: "/src/assets/cody-f-OdHh60XP7EI-unsplash.jpg",
+    alt: "Flight training at Pilot Instructional Center",
+  },
+  badgeText: "High Integrity <br /> Flight Training",
+  bullets: [
+    {
+      title: "Experienced Instructors",
+      description:
+        "Learn from seasoned instructors dedicated to your success, safety, and personal growth.",
+    },
+    {
+      title: "Active Airport Environment",
+      description:
+        "Train at KIXD with modern runways, controlled airspace, and real-world flight experience.",
+    },
+    {
+      title: "Transparent & Safe Training",
+      description:
+        "High-integrity flight education with clear milestones, honest pricing, and no hidden fees.",
+    },
+  ],
+};
+
+const { content, data } = Astro.props;
+const incoming = content || data || {};
+
+const finalContent: WhyUsContent = {
+  upperHeading: incoming.upperHeading ?? defaultContent.upperHeading,
+  title: incoming.title ?? defaultContent.title,
+  description: incoming.description ?? defaultContent.description,
+  descriptions: incoming.descriptions ?? defaultContent.descriptions,
+  button: incoming.button ?? defaultContent.button,
+  image: incoming.image ?? defaultContent.image,
+  badgeText: incoming.badgeText ?? defaultContent.badgeText,
+  bullets: incoming.bullets ?? defaultContent.bullets,
+};
+---
+
+<section class="bg-white py-24 px-6 overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col lg:flex-row items-center gap-16 mb-20">
+      <div class="lg:w-1/2" data-aos="fade-right">
+        {
+          finalContent.upperHeading && (
+            <span class="text-[#745e4d] font-black uppercase tracking-[0.4em] text-xs mb-4 block">
+              {finalContent.upperHeading}
+            </span>
+          )
+        }
+        <h2 class="text-5xl font-black text-[#423731] leading-tight mb-8">
+          {finalContent.title}
+        </h2>
+        <div class="space-y-6">
+          {
+            finalContent.description && (
+              <p class="text-xl text-[#745e4d] font-medium leading-relaxed">
+                {finalContent.description}
+              </p>
+            )
+          }
+          {
+            finalContent.descriptions &&
+              finalContent.descriptions.map((desc: string) => (
+                <p class="text-[#5d4d40] text-sm opacity-80 leading-loose">
+                  {desc}
+                </p>
+              ))
+          }
+        </div>
+
+        {
+          finalContent.button && (
+            <div class="mt-10">
+              <a
+                href={finalContent.button.href}
+                class="inline-block bg-[#423731] text-[#dcc1a6] px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#745e4d] hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl"
+              >
+                {finalContent.button.text}
+              </a>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="lg:w-1/2 relative" data-aos="fade-left">
+        <div
+          class="relative z-10 rounded-[4rem] overflow-hidden shadow-2xl border-[16px] border-[#fcfaf8]"
+        >
+          <div class="bg-[#dcc1a6]/40 flex items-center justify-center">
+            <ImageComp
+              src={finalContent.image?.src ||
+                "/src/assets/cody-f-OdHh60XP7EI-unsplash.jpg"}
+              alt={finalContent.image?.alt || "Flight Training at PIC"}
+              classes="object-cover w-full h-full"
+            />
+          </div>
+        </div>
+        <div
+          class="absolute -top-10 -right-10 w-48 h-48 bg-[#dcc1a6] rounded-full flex items-center justify-center p-8 text-center z-20 animate-pulse"
+        >
+          <p
+            class="text-[#423731] font-black text-[10px] lg:text-xl uppercase tracking-tighter leading-none"
+            set:html={finalContent.badgeText || "High Integrity <br /> Flight Training"}
+          />
+        </div>
+      </div>
+    </div>
+
+    {
+      finalContent.bullets && finalContent.bullets.length > 0 && (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {finalContent.bullets.map((bullet: WhyUsBullet, index: number) => (
+            <div
+              class="relative p-10 rounded-[3rem] bg-[#fcfaf8] border border-transparent hover:border-[#dcc1a6] transition-all duration-500 group"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
+              <span class="absolute top-6 right-8 text-6xl font-black text-[#dcc1a6]/20 group-hover:text-[#dcc1a6]/40 transition-colors">
+                0{index + 1}
+              </span>
+
+              <h3 class="text-xl font-black text-[#423731] mb-4 relative z-10 group-hover:text-[#745e4d]">
+                {bullet.title}
+              </h3>
+              <p class="text-sm text-[#745e4d] leading-relaxed relative z-10">
+                {bullet.description}
+              </p>
+
+              <div class="mt-6 w-8 h-1 bg-[#423731] group-hover:w-full transition-all duration-700" />
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

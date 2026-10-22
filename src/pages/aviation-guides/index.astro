@@ -1,0 +1,136 @@
+---
+import { getCollection } from "astro:content";
+import HeaderMain from "../../components/headers/HeaderMainAlternative.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SurroundingCommunities from "../../components/locations/SurroundingCommunities.astro";
+import OffersStripCTA from "../../components/offers/OffersStripCTA.astro";
+import CTARight from "../../components/ctas/CTARight.astro";
+import Enroll from "../../components/forms/Enroll.astro";
+import SearchableFAQs from "../../components/sections/SearchableFAQs";
+import "aos/dist/aos.css";
+
+const allGuides = await getCollection("aviation-guides");
+
+const data = {
+  siteTitle:
+    "Aviation Guides & Flight Training Resources | Pilot Instructional Center",
+  siteDescription:
+    "Explore in-depth flight training guides, FAA certification roadmaps, and simulator cost-saving strategies created by senior flight instructors for student pilots and aviation enthusiasts.",
+  siteKeywords:
+    "aviation guides, flight training guide, learn to fly Kansas City, private pilot guide, flight school resources",
+  header: {
+    upperHeader: "Aviation Resources & Guides",
+    title: "Flight Training Guides for Students & Enthusiasts",
+    description:
+      "Whether you're taking your first steps toward earning a Private Pilot License or advancing toward commercial ratings, our expert guides provide clear roadmaps, practical tips, and real-world aviation insights.",
+    buttons: [
+      { text: "Explore Guides", href: "#guides", style: "btn-secondary" },
+      {
+        text: "Discovery Flight",
+        href: "/discovery-flight/",
+        style: "btn-transparent",
+      },
+    ],
+    image: {
+      src: "/src/assets/facebook/student-passing-checkride_student-cfi-shaking-hands_PIC_Pilot-instructional-center_Flight-school_cropped.jpg",
+      alt: "Aviation student and CFI at Pilot Instructional Center",
+    },
+  },
+  faqs: {
+    title: "Aviation Guides & Flight Training FAQs",
+    paragraphs: [
+      "Find quick, authoritative answers to common questions about our aviation guides, starting flight training in Kansas City, FAA certificate requirements, and training milestones.",
+    ],
+    ctaUrl: "/contact/",
+    ctaTitle: "Speak with an Instructor",
+    categories: [
+      { id: "guides", name: "Using Our Guides" },
+      { id: "certificates", name: "Certificates & Ratings" },
+      { id: "training-costs", name: "Costs & Scheduling" },
+      { id: "career-track", name: "Career Pathways" },
+    ],
+    faqs: [
+      {
+        categoryId: "guides",
+        question:
+          "How should I use these aviation guides to plan my flight training?",
+        answer:
+          "Our aviation guides break down complex FAA training requirements into step-by-step milestones. We recommend starting with our <a href='/aviation-guides/flight-training-and-pilot-training-guide/' class='underline font-bold text-accent-500 hover:text-primary-800'>Flight Training & Pilot Training Guide</a> to understand the overall process, costs, and timeline before booking an introductory discovery flight.",
+      },
+      {
+        categoryId: "guides",
+        question: "Are these guides up-to-date with current FAA standards?",
+        answer:
+          "Yes. All PIC guides are written and reviewed by senior Gold Seal certified flight instructors (CFIs). They reflect current FAA Airman Certification Standards (ACS), Part 61 regulations, and real-world flight operations at New Century AirCenter (KIXD).",
+      },
+      {
+        categoryId: "certificates",
+        question:
+          "What is the recommended sequence for earning pilot certificates?",
+        answer:
+          "The standard training sequence begins with the <a href='/flight-training/private-pilot/' class='underline font-bold text-accent-500 hover:text-primary-800'>Private Pilot License (PPL)</a>, followed by the <a href='/flight-training/instrument-rating/' class='underline font-bold text-accent-500 hover:text-primary-800'>Instrument Rating (IFR)</a>, and then the <a href='/flight-training/commercial-pilot/' class='underline font-bold text-accent-500 hover:text-primary-800'>Commercial Pilot Certificate</a>. From there, pilots can add Multi-Engine ratings or become a <a href='/flight-training/certified-flight-instructor/' class='underline font-bold text-accent-500 hover:text-primary-800'>Certified Flight Instructor (CFI)</a> to build flight hours toward airlines.",
+      },
+      {
+        categoryId: "certificates",
+        question:
+          "Do I need a college degree or prior aviation background to become a pilot?",
+        answer:
+          "No college degree or prior experience is required. Anyone 16 or older (17 for certificate issuance) who can read, speak, and understand English, and who meets FAA medical requirements, can start flying immediately.",
+      },
+      {
+        categoryId: "training-costs",
+        question:
+          "How can flight simulators help reduce the overall cost of flight training?",
+        answer:
+          "Our FAA-approved <a href='/about/our-fleet/simulator-redbird-fmx-full-motion-aatd/' class='underline font-bold text-accent-500 hover:text-primary-800'>Redbird FMX full-motion simulator</a> allows you to log up to 20 instrument hours and 50 commercial hours at $60/hr block rates—saving thousands of dollars compared to renting an aircraft with fuel and instructor time.",
+      },
+      {
+        categoryId: "training-costs",
+        question:
+          "Can I complete flight training part-time while working a full-time job?",
+        answer:
+          "Absolutely. In fact, most of our student pilots train on a part-time basis. With flexible instructor availability and structured lesson plans, you can fly mornings, evenings, or weekends without putting your career or personal life on hold.",
+      },
+      {
+        categoryId: "career-track",
+        question:
+          "What is the fastest pathway from zero hours to an airline cockpit?",
+        answer:
+          "Our structured <a href='/airline-pilot-track/' class='underline font-bold text-accent-500 hover:text-primary-800'>Airline Pilot Track</a> takes you from zero experience through PPL, Instrument, Commercial, and CFI certifications. Once certified as an instructor at PIC, you can earn income while building the 1,500 hours required for the Airline Transport Pilot (ATP) certificate.",
+      },
+    ],
+  },
+};
+---
+
+<BaseLayout
+  siteTitle={data.siteTitle}
+  siteDescription={data.siteDescription}
+  siteKeywords={data.siteKeywords}
+>
+  <HeaderMain content={data.header} />
+
+  <OffersStripCTA />
+
+  <SurroundingCommunities
+    id="guides"
+    title="Comprehensive Aviation & Flight Training Guides"
+    items={allGuides}
+    basePath="aviation-guides"
+    ctaText='Read Guide <span class="ml-1">&rarr;</span>'
+  />
+
+  <CTARight />
+
+  <Enroll />
+
+  <SearchableFAQs
+    client:load
+    title={data.faqs.title}
+    paragraphs={data.faqs.paragraphs}
+    faqs={data.faqs.faqs}
+    categories={data.faqs.categories}
+    ctaUrl={data.faqs.ctaUrl}
+    ctaTitle={data.faqs.ctaTitle}
+  />
+</BaseLayout>

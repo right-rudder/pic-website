@@ -1,0 +1,54 @@
+<section class="bg-logo">
+  <div
+    class="flex flex-col px-8 pt-12 sm:px-12 lg:w-3/4 max-w-7xl mx-auto text-center text-primary-300"
+  >
+    <span
+      class="uppercase"
+      data-aos="fade-right"
+      data-aos-delay="300"
+      data-aos-duration="1500"
+    >
+      Testimonials
+    </span>
+    <h2
+      class="text-4xl font-semibold tracking-tight text-pretty sm:text-5xl"
+      data-aos="fade-right"
+      data-aos-duration="1500"
+    >
+      What our students say
+    </h2>
+  </div>
+  <!-- Elfsight Google Reviews | PIC (Lazy Loaded) -->
+  <div
+    id="elfsight-reviews-container"
+    class="elfsight-app-2024eee8-eac6-4d69-9412-48c4f8c91306 max-w-7xl mx-auto py-12 min-h-[50vh]"
+    data-elfsight-app-lazy
+  >
+  </div>
+</section>
+
+<script>
+  function loadElfsight() {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  const container = document.getElementById("elfsight-reviews-container");
+  if (container && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          loadElfsight();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(container);
+  } else {
+    setTimeout(loadElfsight, 4000);
+  }
+</script>

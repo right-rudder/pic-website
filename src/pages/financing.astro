@@ -1,0 +1,280 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeaderMain from "../components/headers/HeaderMainAlternative.astro";
+import RoadMap from "../components/sections/RoadMap.astro";
+import WhyBecomePilot from "../components/sections/WhyBecomePilot.astro";
+import WhyUs from "../components/locations/WhyUs.astro";
+import CTALeft from "../components/ctas/CTALeft.astro";
+import FAQ from "../components/sections/FAQ.astro";
+
+import "aos/dist/aos.css";
+
+const data = {
+  siteTitle:
+    "Flight Training Financing & Payment Options | Pilot Instructional Center",
+  siteDescription:
+    "Explore flexible flight training financing, aviation loan programs, and pay-as-you-go options at Pilot Instructional Center near Kansas City. Train with clear pricing and zero hidden fees.",
+  siteKeywords:
+    "flight school financing Kansas City, pilot training loans, aviation financing, pay as you go flight school, flight training payment plans, Pilot Instructional Center financing, KIXD flight school cost",
+
+  header: {
+    image: {
+      src: "/src/assets/rrm-visit/pilot-instructional-center_new-century-KS_ground-school-cfi-teaching.png",
+      alt: "Flight instructor discussing training plans and financing with student at Pilot Instructional Center",
+    },
+    upperHeader: "Aviation Financing & Flexible Payments",
+    title: "Affordable Flight Training with Flexible Financing Options",
+    description:
+      "Invest in your aviation future with confidence. Pilot Instructional Center offers transparent pay-as-you-go training and guidance on reputable third-party aviation financing programs.",
+    descriptions: [
+      "Pay as you go per lesson ,  no large upfront lump-sum requirement.",
+      "Access trusted third-party aviation lenders to fund individual ratings or full career tracks.",
+      "Transparent, upfront cost estimates guided by senior flight instructors at New Century AirCenter.",
+    ],
+    buttons: [
+      {
+        text: "Request Financing Info",
+        href: "/contact/",
+        style: "btn-secondary",
+      },
+      {
+        text: "View Program Pricing",
+        href: "/pricing/",
+        style: "btn-transparent",
+      },
+    ],
+  },
+
+  // ============================
+  // ROADMAP (TRAINING & INVESTMENT)
+  // ============================
+  roadMap: {
+    image: {
+      src: "/src/assets/stock/stock_Plane-ground-road_oleksandr-brovko-52duyrkyEls-unsplash.jpg",
+      alt: "Flight training pathway from student pilot to career aviator",
+    },
+    upperHeading: "Your Training & Investment Roadmap",
+    title: "Transparent Costs From First Flight to the Flight Deck",
+    description:
+      "We believe in complete financial transparency. Here is a clear overview of estimated training costs for every rating, whether funded through flexible pay-as-you-go or third-party financing.",
+    descriptions: [
+      "Every rating builds upon your previous flight experience, allowing you to budget milestone by milestone.",
+      "Pay-as-you-go allows you to pace your training frequency around your personal budget.",
+      "Third-party aviation financing can cover single certificates or your full professional career track.",
+    ],
+    bullets: [
+      {
+        title: "Private Pilot License",
+        description:
+          "Your foundation. Includes 30 hours dual flight instruction, 10 hours solo flight, 20 hours personalized ground training, and online ground school.",
+        icon: "Flag",
+        link: {
+          title: "Private Pilot Program",
+          href: "/flight-training/private-pilot/",
+        },
+      },
+      {
+        title: "Instrument Rating",
+        description:
+          "Fly confidently in clouds and low visibility. Includes 20 hours dual instruction, 25 hours time building, 10 hours AATD simulator, and 20 hours ground training.",
+        icon: "Cloud",
+        link: {
+          title: "Instrument Rating Program",
+          href: "/flight-training/instrument-rating/",
+        },
+      },
+      {
+        title: "Commercial Pilot",
+        description:
+          "Turn your passion into a profession and fly for compensation. Includes 20 hours dual flight, 85 hours time building, 50 hours simulator, and 15 hours ground lessons.",
+        icon: "Briefcase",
+        link: {
+          title: "Commercial Pilot Program",
+          href: "/flight-training/commercial-pilot/",
+        },
+      },
+      {
+        title: "CFI & CFII Programs",
+        description:
+          "Earn your Certified Flight Instructor ratings, build flight hours toward the 1,500-hour airline minimum, and get paid while mentoring future aviators.",
+        icon: "BookOpen",
+        link: {
+          title: "CFI Academy",
+          href: "/flight-training/certified-flight-instructor-cfi/",
+        },
+      },
+    ],
+  },
+
+  // ============================
+  // WHY BECOME A PILOT / FINANCING MODEL
+  // ============================
+  whyBecomePilot: {
+    image: {
+      src: "/src/assets/rrm-visit/pilot-instructional-center_new-century-KS_pilot-training_student.png",
+      alt: "Student pilot planning training at Pilot Instructional Center",
+    },
+    upperHeader: "Accessible Flight Training",
+    title: "Flexible Payment Options Designed for Every Student",
+    description:
+      "Aviation is one of the most rewarding personal and professional pursuits available today. PIC provides manageable payment models to help you take flight without financial friction.",
+    descriptions: [
+      "Flight training is an investment in a lucrative, lifelong career. With commercial pilots and regional first officers earning competitive starting wages, financing your training can offer substantial long-term returns.",
+      "Our team helps you explore approved aviation lenders, estimate your training milestone budgets, and establish a schedule that aligns with your financial goals.",
+    ],
+    bullets: [
+      {
+        title: "Pay-As-You-Go Convenience",
+        description:
+          "Pay after each flight session for aircraft and instructor time ,  no upfront lump sums or binding contracts.",
+        icon: "Clock",
+      },
+      {
+        title: "Third-Party Aviation Loans",
+        description:
+          "Partner with reputable aviation financing providers offering customized terms and deferred repayment options for qualified applicants.",
+        icon: "TrendingUp",
+      },
+      {
+        title: "Strong Career ROI",
+        description:
+          "High industry demand and rising airline pilot salaries help graduates manage loan repayments comfortably as they advance.",
+        icon: "Briefcase",
+      },
+    ],
+    button: {
+      text: "Talk to a Financing Advisor",
+      href: "/contact/",
+    },
+  },
+
+  // ============================
+  // WHY US (THE PIC DIFFERENCE)
+  // ============================
+  whyUs: {
+    upperHeading: "THE PIC PROMISE",
+    title: "High-Integrity Training With No Hidden Surcharges",
+    description:
+      "At Pilot Instructional Center, honesty and safety come first. We don't advertise artificially low minimums or surprise you with unexpected fees.",
+    descriptions: [
+      "Unlike large flight training factories that demand tens of thousands of dollars upfront, PIC gives you full control over your budget with transparent billing.",
+      "Our senior Gold Seal instructors focus on quality mentorship, ensuring you achieve true proficiency without wasted hours or inflated costs.",
+    ],
+    button: {
+      text: "View Full Pricing Breakdown",
+      href: "/pricing/",
+    },
+    image: {
+      src: "/src/assets/rrm-visit/pilot-instructional-center_new-century-KS_cfis-preparing-plane-cessna-airport-near-Kansas-city-MO.png",
+      alt: "Cessna aircraft and senior instructors at New Century AirCenter",
+    },
+    badgeText: "Transparent <br /> Flight Costs",
+    bullets: [
+      {
+        title: "No Upfront Lump Sums",
+        description:
+          "Maintain total control of your money. Pay per lesson as you progress toward your pilot certificates.",
+      },
+      {
+        title: "Reputable Lenders",
+        description:
+          "Get connected with trusted third-party aviation lenders tailored specifically for student pilots.",
+      },
+      {
+        title: "Simulator Cost Savings",
+        description:
+          "Save thousands in training costs by logging FAA-approved hours in our Redbird full-motion AATD simulator.",
+      },
+    ],
+  },
+
+  // ============================
+  // CTA
+  // ============================
+  cta: {
+    title: "Have Questions About Financing Your Training?",
+    description:
+      "Our admissions team is here to walk you through payment options, third-party lenders, and estimated timelines so you can take off with confidence.",
+    button: {
+      text: "Contact Our Admissions Team",
+      href: "/contact/",
+    },
+    image: {
+      src: "/src/assets/rrm-visit/pilot-instructional-center_pilot-checking-wing-plane_flight-school_pilot-training.png",
+      alt: "Pilot pre-flight inspection at Pilot Instructional Center",
+    },
+  },
+
+  // ============================
+  // FAQ
+  // ============================
+  faq: {
+    upperHeading: "Financing FAQs",
+    title: "Frequently Asked Questions About Flight Training Financing",
+    items: [
+      {
+        question:
+          "Does Pilot Instructional Center offer financing for flight training?",
+        answer:
+          "Yes. PIC partners with reputable third-party aviation financing programs to make flight training more accessible for motivated students. We also offer pay-as-you-go options so you can budget per lesson. Contact our team to learn about current lender options and eligibility.",
+      },
+      {
+        question: "How does the pay-as-you-go payment option work?",
+        answer:
+          "With pay-as-you-go, you simply pay for aircraft rental, simulator time, and instructor fees at the end of each flight lesson. There is no requirement to pay for entire certificates or the full career track upfront.",
+      },
+      {
+        question: "What payment methods does PIC accept?",
+        answer:
+          "We accept Cash, Credit Cards, Checks, and approved third-party aviation loan disbursements.",
+      },
+      {
+        question: "What costs are included in the program price estimates?",
+        answer:
+          "Our program estimates cover estimated aircraft rental flight hours, personalized ground lessons, and simulator time. Additional third-party expenses include FAA medical examinations, written knowledge exam fees, personal gear/headset, and Designated Pilot Examiner (DPE) checkride fees.",
+      },
+      {
+        question:
+          "Can I finance individual ratings or only the full career track?",
+        answer:
+          "Depending on the lender, financing can be applied toward individual ratings (such as Private Pilot or Instrument Rating) or complete zero-to-commercial/CFI professional career tracks.",
+      },
+      {
+        question: "How can I reduce the overall cost of my flight training?",
+        answer:
+          "Training consistently (2–3 times per week), thoroughly studying ground school materials before lessons, and logging FAA-approved time in our Redbird FMX full-motion simulator will significantly reduce overall flight hours and save thousands of dollars.",
+      },
+    ],
+    ctas: [
+      {
+        upperHeading: "Ready to Begin?",
+        title: "Take Your First Step With PIC",
+        description:
+          "Contact our admissions team to discuss financing options or book an introductory Discovery Flight at New Century AirCenter.",
+        button: {
+          href: "/contact/",
+          text: "Request Financing Information",
+          style: "primary",
+        },
+      },
+    ],
+  },
+};
+---
+
+<BaseLayout
+  siteTitle={data.siteTitle}
+  siteDescription={data.siteDescription}
+  siteKeywords={data.siteKeywords}
+>
+  <HeaderMain
+    content={data.header}
+    mainSize={false}
+    images={[data.header.image]}
+  />
+  <WhyUs content={data.whyUs} />
+  <WhyBecomePilot content={data.whyBecomePilot} />
+  <RoadMap content={data.roadMap} />
+  <CTALeft content={data.cta} />
+  <FAQ content={data.faq} />
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+import {
+  SITE_TITLE,
+  INSTAGRAM_URL,
+  PHONE_NUMBER,
+  OG_IMAGE,
+  FAVICON,
+  LOGO,
+} from "../../data/consts";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const site = Astro.site || "https://pilotinstructionalcenter.com";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const {
+  title,
+  description,
+  image = OG_IMAGE,
+} = Astro.props;
+
+const ogImageUrl = new URL(image, site).toString();
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/png" href={FAVICON} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- SiteMap -->
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
+/>
+
+
+<!-- Google Tag Manager -->
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+
+  function loadGTM() {
+    if (window._gtmLoaded) return;
+    window._gtmLoaded = true;
+    var j = document.createElement("script");
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=GTM-N5ZTCQ6X";
+    document.head.appendChild(j);
+  }
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(loadGTM, { timeout: 3000 });
+  } else {
+    window.addEventListener("load", function () {
+      setTimeout(loadGTM, 1000);
+    });
+  }
+
+  ["scroll", "mousemove", "touchstart", "click", "keydown"].forEach(function (e) {
+    window.addEventListener(e, loadGTM, { once: true, passive: true });
+  });
+</script>
+<!-- End Google Tag Manager -->
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+

@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import HeaderMain from "../../components/headers/HeaderMainAlternative.astro";
+import CTARight from "../../components/ctas/CTARight.astro";
+import MapLocation from "../../components/external/MapLocation.astro";
+import AreasServed from "../../components/location/AreasServed.astro";
+import Enroll from "../../components/forms/Enroll.astro";
+import PrimaryHub from "../../components/locations/PrimaryHub.astro";
+import SurroundingCommunities from "../../components/locations/SurroundingCommunities.astro";
+
+const allLocations = await getCollection("pilot-training");
+const sortedLocations = allLocations.sort((a, b) =>
+  a.data.city.localeCompare(b.data.city),
+);
+
+const homeBase = allLocations.find((loc) =>
+  loc.data.keyPlace2.includes("New Century"),
+);
+const otherLocations = sortedLocations.filter((loc) => loc.id !== homeBase?.id);
+
+const data = {
+  siteTitle: "Flight Training PIC Areas Served | Serving the Kansas City Metro",
+  siteDescription:
+    "Discover where Pilot Instructional Center provides elite flight training. From Kansas to Missouri, we're building the next generation of aviators.",
+  header: {
+    upperHeader: "Our Service Areas",
+    title: "Flight Training Across the Kansas City Metro",
+    description:
+      "Expert instruction meets convenient local access. Choose your city to begin your journey.",
+    image: {
+      src: "/src/assets/stock/stock_Plane-ground-sunset_roland-denes-MsZEJYU8alE-unsplash.jpg",
+      alt: "Pilot training",
+    },
+  },
+};
+---
+
+<BaseLayout
+  siteTitle={data.siteTitle}
+  siteDescription={data.siteDescription}
+  siteKeywords="flight training locations"
+>
+  <HeaderMain content={data.header} />
+
+  <PrimaryHub homeBase={homeBase} />
+  <SurroundingCommunities locations={otherLocations} />
+
+  <MapLocation />
+  <AreasServed />
+  <CTARight />
+  <Enroll />
+</BaseLayout>

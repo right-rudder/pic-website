@@ -1,0 +1,252 @@
+---
+interface Props {
+  title?: string;
+  paragraphs?: string[];
+  faqs?: Array<{
+    question: string;
+    answer: string;
+    categoryId?: string;
+  }>;
+  categories?: Array<{
+    id: string;
+    name: string;
+  }>;
+  ctaUrl?: string;
+  ctaTitle?: string;
+  btnClass?: string;
+}
+
+const {
+  title = "How can we help?",
+  paragraphs = [],
+  faqs = [],
+  categories = [],
+  ctaUrl,
+  ctaTitle,
+  btnClass = "inline-block bg-primary-400 text-primary-800 px-10 py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white transition-all transform hover:-translate-y-1",
+} = Astro.props;
+---
+
+<section class="bg-primary-800 py-24 px-6 relative overflow-hidden" id="faq-section" data-faq-wrapper>
+  <div class="mx-auto max-w-7xl relative z-10">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-16" data-aos="fade-up">
+      <h2 
+        class="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 tracking-tight" 
+        set:html={title}
+      />
+      
+      {paragraphs.length > 0 && (
+        <div class="space-y-4 max-w-2xl mx-auto font-body text-white/80 text-base mb-8">
+          {paragraphs.map((para) => (
+            <p set:html={para} />
+          ))}
+        </div>
+      )}
+
+      <!-- Search Input Bar -->
+      <div class="relative max-w-2xl mx-auto mb-10">
+        <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <input
+          type="text"
+          data-faq-search
+          placeholder="Search by keyword (e.g. 'Medical', 'Cost', 'Solo')..."
+          class="w-full bg-white/10 border border-white/20 rounded-2xl py-5 pl-14 pr-6 font-body text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+        />
+      </div>
+
+      <!-- Categories Filter (Only show if categories exist) -->
+      {categories && categories.length > 0 && (
+        <div class="flex flex-wrap justify-center gap-3" data-faq-categories>
+          <button
+            type="button"
+            data-cat="all"
+            class="px-6 py-2 rounded-full border font-body text-sm font-bold uppercase tracking-widest transition-all bg-primary-400 text-primary-800 border-primary-400 cursor-pointer"
+          >
+            All Questions
+          </button>
+          {categories.map((cat) => (
+            <button
+              type="button"
+              data-cat={cat.id}
+              class="px-6 py-2 rounded-full border border-white/20 font-body text-sm font-bold uppercase tracking-widest transition-all text-white hover:bg-white/10 cursor-pointer"
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- FAQs Accordion List -->
+    <div class="max-w-4xl mx-auto">
+      <div class="space-y-4" data-faq-list>
+        {faqs.map((faq, index) => (
+          <div
+            data-aos="fade-up"
+            data-aos-delay={index < 10 ? index * 50 : 0}
+            data-faq-item
+            data-category={faq.categoryId || "all"}
+            class="border border-white/10 rounded-2xl overflow-hidden bg-white/5 transition-all duration-300"
+          >
+            <button
+              type="button"
+              data-faq-toggle
+              aria-expanded="false"
+              class="w-full flex justify-between items-center p-6 cursor-pointer outline-none focus:outline-none text-left"
+            >
+              <span 
+                class="font-heading text-lg md:text-xl font-bold text-white pr-8 leading-tight" 
+                set:html={faq.question}
+              />
+              <span 
+                data-faq-chevron
+                class="text-white text-2xl transition-transform duration-300 shrink-0 select-none inline-block"
+              >
+                ⟩
+              </span>
+            </button>
+            
+            <div
+              data-faq-content
+              class="grid transition-[grid-template-rows] duration-300 ease-in-out"
+              style="grid-template-rows: 0fr;"
+            >
+              <div class="overflow-hidden">
+                <div class="px-6 pb-6 text-white/80 font-body leading-relaxed text-base border-t border-white/10 pt-4 mt-2">
+                  <div set:html={faq.answer} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <div data-faq-empty class="hidden text-center py-20">
+          <p class="text-white/60 font-body italic text-lg">
+            No questions found matching your search.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA Block -->
+    {ctaUrl && ctaTitle && (
+      <div 
+        class="mt-20 text-center bg-white/5 p-12 rounded-[3rem] border border-white/10 max-w-4xl mx-auto" 
+        data-aos="fade-up"
+      >
+        <h3 class="font-heading text-2xl md:text-3xl font-bold text-white mb-4">
+          Still have a specific question?
+        </h3>
+        <p class="font-body text-white/70 mb-8 max-w-md mx-auto text-sm">
+          Our senior instructors are happy to discuss your specific goals and flight training timeline.
+        </p>
+        <a href={ctaUrl} class={btnClass}>
+          {ctaTitle}
+        </a>
+      </div>
+    )}
+    
+  </div>
+</section>
+
+<script>
+  function initSearchableFaqs() {
+    const wrappers = document.querySelectorAll("[data-faq-wrapper]");
+    wrappers.forEach((wrapper) => {
+      let activeCategory = "all";
+      let searchQuery = "";
+
+      const searchInput = wrapper.querySelector("[data-faq-search]");
+      const catButtons = wrapper.querySelectorAll("[data-faq-categories] button");
+      const items = wrapper.querySelectorAll("[data-faq-item]");
+      const emptyMsg = wrapper.querySelector("[data-faq-empty]");
+
+      function filterItems() {
+        let visibleCount = 0;
+        items.forEach((item) => {
+          const itemCat = item.getAttribute("data-category") || "all";
+          const text = item.textContent?.toLowerCase() || "";
+          const matchesCat = activeCategory === "all" || itemCat === activeCategory;
+          const matchesSearch = !searchQuery || text.includes(searchQuery);
+
+          if (matchesCat && matchesSearch) {
+            (item as HTMLElement).style.display = "";
+            visibleCount++;
+          } else {
+            (item as HTMLElement).style.display = "none";
+          }
+        });
+
+        if (emptyMsg) {
+          (emptyMsg as HTMLElement).style.display = visibleCount === 0 ? "block" : "none";
+        }
+      }
+
+      // Accordion toggle
+      items.forEach((item) => {
+        const toggle = item.querySelector("[data-faq-toggle]");
+        const content = item.querySelector("[data-faq-content]");
+        const chevron = item.querySelector("[data-faq-chevron]");
+
+        toggle?.addEventListener("click", () => {
+          const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+
+          // Close other open accordions
+          items.forEach((other) => {
+            if (other !== item) {
+              const otherToggle = other.querySelector("[data-faq-toggle]");
+              const otherContent = other.querySelector("[data-faq-content]");
+              const otherChevron = other.querySelector("[data-faq-chevron]");
+              otherToggle?.setAttribute("aria-expanded", "false");
+              if (otherContent) (otherContent as HTMLElement).style.gridTemplateRows = "0fr";
+              if (otherChevron) (otherChevron as HTMLElement).style.transform = "rotate(0deg)";
+            }
+          });
+
+          if (isExpanded) {
+            toggle.setAttribute("aria-expanded", "false");
+            if (content) (content as HTMLElement).style.gridTemplateRows = "0fr";
+            if (chevron) (chevron as HTMLElement).style.transform = "rotate(0deg)";
+          } else {
+            toggle.setAttribute("aria-expanded", "true");
+            if (content) (content as HTMLElement).style.gridTemplateRows = "1fr";
+            if (chevron) (chevron as HTMLElement).style.transform = "rotate(90deg)";
+          }
+        });
+      });
+
+      // Search event
+      searchInput?.addEventListener("input", (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+        filterItems();
+      });
+
+      // Category filters
+      catButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const cat = btn.getAttribute("data-cat") || "all";
+          activeCategory = cat;
+
+          catButtons.forEach((b) => {
+            b.classList.remove("bg-primary-400", "text-primary-800", "border-primary-400");
+            b.classList.add("text-white", "border-white/20");
+          });
+
+          btn.classList.remove("text-white", "border-white/20");
+          btn.classList.add("bg-primary-400", "text-primary-800", "border-primary-400");
+
+          filterItems();
+        });
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initSearchableFaqs);
+  document.addEventListener("astro:page-load", initSearchableFaqs);
+</script>

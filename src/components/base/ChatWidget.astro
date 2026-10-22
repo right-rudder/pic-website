@@ -1,0 +1,45 @@
+---
+export interface Props {
+  widgetId?: string;
+}
+
+const {
+  widgetId = "6a21f9609372a70f7d9315fa",
+} = Astro.props;
+---
+
+<div
+  id="chat-widget-placeholder"
+  data-chat-widget
+  data-widget-id={widgetId}
+></div>
+
+<script type="module" define:vars={{ widgetId }}>
+  let chatLoaded = false;
+
+  function loadChatWidget() {
+    if (chatLoaded) return;
+    chatLoaded = true;
+
+    const script = document.createElement("script");
+    script.src = "https://widgets.leadconnectorhq.com/loader.js";
+    script.setAttribute(
+      "data-resources-url",
+      "https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+    );
+    script.setAttribute("data-widget-id", widgetId);
+
+    document.body.appendChild(script);
+  }
+
+  function onScrollLoadChat() {
+    if (window.scrollY > 100) {
+      loadChatWidget();
+      window.removeEventListener("scroll", onScrollLoadChat);
+    }
+  }
+
+  window.addEventListener("scroll", onScrollLoadChat, { passive: true });
+
+  setTimeout(loadChatWidget, 5000);
+</script>

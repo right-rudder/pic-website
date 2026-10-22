@@ -1,0 +1,125 @@
+---
+const cloudAnimatedSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="opacity-10 group-hover:opacity-30 w-20 h-20 transition-opacity text-accent-500"><path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="60" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 19h11c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h-1v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-0.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z"><animate attributeName="d" dur="12s" keyTimes="0;0.25;0.5;0.75;1" repeatCount="indefinite" values="M7 19h11c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h-1v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-0.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z;M6 19h12c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h0v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-2.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z;M6 19h11c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h0v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-1.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z;M7 19h10c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h0v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-0.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z;M7 19h11c2.21 0 4 -1.79 4 -4c0 -2.21 -1.79 -4 -4 -4h-1v-1c0 -2.76 -2.24 -5 -5 -5c-2.42 0 -4.44 1.72 -4.9 4h-0.1c-2.76 0 -5 2.24 -5 5c0 2.76 2.24 5 5 5Z" /><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="60;0" /><animate fill="freeze" attributeName="fill-opacity" begin="0.6s" dur="0.4s" to="1" /></path></svg>`;
+
+interface Item {
+  id?: string;
+  href?: string;
+  data?: {
+    city?: string;
+    distance?: string;
+    title?: string;
+    siteTitle?: string;
+    description?: string;
+    siteDescription?: string;
+    header?: {
+      title?: string;
+      description?: string;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  };
+}
+
+interface Props {
+  id?: string;
+  title?: string;
+  locations?: Item[];
+  items?: Item[];
+  basePath?: string;
+  ctaText?: string;
+}
+
+const {
+  id,
+  title = "Serving Surrounding Communities",
+  locations,
+  items,
+  basePath,
+  ctaText,
+} = Astro.props;
+
+const itemList = items ?? locations ?? [];
+const defaultBasePath =
+  basePath ?? (items ? "aviation-guides" : "pilot-training");
+const defaultCtaText =
+  ctaText ??
+  (defaultBasePath === "aviation-guides"
+    ? 'Read Guide <span class="ml-1">&rarr;</span>'
+    : 'Explore Training <span class="ml-1">&rarr;</span>');
+---
+
+{
+  itemList && itemList.length > 0 && (
+    <section id={id} class="w-full bg-accent-50 py-16 px-4 sm:px-6 lg:px-8 min-h-7xl">
+      <div class="max-w-7xl mx-auto">
+        {title && (
+          <h2 class="text-3xl font-bold text-[#423731] mb-8" set:html={title} />
+        )}
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {itemList.map((item) => {
+            const itemSlug = item.id ? item.id.replace(/\.mdx?$/, "") : "";
+            const href = item.href ?? `/${defaultBasePath}/${itemSlug}/`;
+            const heading =
+              item.data?.header?.title ??
+              item.data?.title ??
+              item.data?.city ??
+              item.data?.siteTitle ??
+              "";
+
+            return (
+              <a
+                href={href}
+                class="group relative overflow-hidden rounded-[1.5rem] border border-[#dcc1a6]/30 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-[#4b7992] flex flex-col justify-between"
+              >
+                <div>
+                  <div class="absolute -top-5 -right-5 p-6 transition-opacity">
+                    <Fragment set:html={cloudAnimatedSvg} />
+                  </div>
+                  <h3
+                    class="text-2xl font-bold text-[#423731]"
+                    set:html={heading}
+                  />
+
+                  {item.data?.description ? (
+                    <p
+                      class="mt-3 text-[#5d4d40]/70 leading-relaxed"
+                      set:html={item.data.description}
+                    />
+                  ) : item.data?.header?.description ? (
+                    <p
+                      class="mt-3 text-[#5d4d40]/70 leading-relaxed"
+                      set:html={item.data.header.description}
+                    />
+                  ) : item.data?.siteDescription ? (
+                    <p
+                      class="mt-3 text-[#5d4d40]/70 leading-relaxed"
+                      set:html={item.data.siteDescription}
+                    />
+                  ) : item.data?.city ? (
+                    <p class="mt-3 text-[#5d4d40]/70 leading-relaxed">
+                      Serving <span set:html={item.data.city} /> pilots with
+                      professional flight instruction
+                      {item.data.distance ? (
+                        <>
+                          {" "}
+                          just <span set:html={item.data.distance} /> from our
+                          central hub.
+                        </>
+                      ) : (
+                        "."
+                      )}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div class="mt-6 inline-flex items-center font-bold text-[#4b7992] group-hover:gap-2 transition-all">
+                  <Fragment set:html={defaultCtaText} />
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}

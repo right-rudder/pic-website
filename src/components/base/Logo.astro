@@ -1,0 +1,33 @@
+---
+import ImageComp from "../utils/ImageComp.astro";
+const { blackAndWhite = false, classes = "" } = Astro.props;
+---
+
+{
+  blackAndWhite &&
+    <div class={`${classes} bg-primary-800 rounded-full py-2 px-2 transition-all duration-300 ease-in-out`} id="logo-black-and-white">
+      <ImageComp 
+        src={"/src/assets/LogoPIlotInstructionalCenter.png"}
+        alt={"Logo for Pilot Instructional Center"}
+        classes="object-cover"
+        loading="eager"
+        fetchpriority="high"
+        widths={[48, 96, 144, 214]}
+        sizes="214px"
+      />
+    </div>
+}
+{
+  (!blackAndWhite) &&
+    <div class={`${classes} rounded-full `} id="logo-default">
+      <ImageComp 
+        src={"/src/assets/LogoPIlotInstructionalCenterColor.png"}
+        alt={"Logo for Pilot Instructional Center"}
+        classes="object-cover"
+        loading="eager"
+        fetchpriority="high"
+        widths={[48, 96, 144, 214]}
+        sizes="214px"
+      />
+    </div>
+}

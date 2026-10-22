@@ -1,0 +1,87 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import CTARight from "../../components/ctas/CTARight.astro";
+import Enroll from "../../components/forms/Enroll.astro";
+import HeaderMain from "../../components/headers/HeaderMainAlternative.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProgramsComponentDesign from "../../components/sections/ProgramsComponentDesign.astro";
+import SearchableFAQs from "../../components/sections/SearchableFAQs";
+import TextIcons from "../../components/sections/TextIcons.astro";
+import PrimaryHub from "../../components/locations/PrimaryHub.astro";
+import SurroundingCommunities from "../../components/locations/SurroundingCommunities.astro";
+import MapLocation from "../../components/external/MapLocation.astro";
+import AreasServed from "../../components/location/AreasServed.astro";
+import "aos/dist/aos.css";
+
+type AviationGuideEntry = CollectionEntry<"aviation-guides">;
+
+export async function getStaticPaths() {
+  const guides = await getCollection("aviation-guides");
+  return guides.map((entry: AviationGuideEntry) => {
+    const slug = entry.id.replace(/\.mdx?$/, "");
+    return {
+      params: { slug },
+      props: {
+        guideData: entry.data,
+      },
+    };
+  });
+}
+
+const { guideData } = Astro.props;
+
+const allLocations = await getCollection("pilot-training");
+const sortedLocations = allLocations.sort((a, b) =>
+  a.data.city.localeCompare(b.data.city),
+);
+
+const homeBase = allLocations.find((loc) =>
+  loc.data.keyPlace2?.includes("New Century"),
+);
+const otherLocations = sortedLocations.filter((loc) => loc.id !== homeBase?.id);
+---
+
+<BaseLayout
+  siteTitle={guideData.siteTitle}
+  siteDescription={guideData.siteDescription}
+  siteKeywords={guideData.siteKeywords}
+>
+  <HeaderMain
+    content={guideData.header}
+    mainSize={false}
+    showButton={false}
+    images={guideData.header?.image ? [guideData.header.image] : []}
+  />
+  
+  {guideData.program && <ProgramsComponentDesign program={guideData.program} />}
+  
+  {guideData.textIcons ? (
+    <TextIcons content={guideData.textIcons} />
+  ) : (
+    <TextIcons />
+  )}
+
+  {guideData.ctas?.ctaPrivatePilot && (
+    <CTARight content={guideData.ctas.ctaPrivatePilot} />
+  )}
+  
+  <Enroll />
+  
+  {
+    guideData.faqs ? (
+      <SearchableFAQs
+        client:load
+        title={guideData.faqs.title}
+        paragraphs={guideData.faqs.paragraphs}
+        faqs={guideData.faqs.faqs}
+        categories={guideData.faqs.categories}
+        ctaUrl={guideData.faqs.ctaUrl}
+        ctaTitle={guideData.faqs.ctaTitle}
+        btnClass={guideData.faqs.btnClass}
+      />
+    ) : (
+      <SearchableFAQs client:load />
+    )
+  }
+</BaseLayout>

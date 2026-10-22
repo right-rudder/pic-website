@@ -1,0 +1,195 @@
+---
+import ImageComp from "../utils/ImageComp.astro";
+
+export interface WhyBecomePilotBullet {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+export interface WhyBecomePilotButton {
+  text: string;
+  href: string;
+}
+
+export interface WhyBecomePilotImage {
+  src: string;
+  alt: string;
+}
+
+export interface WhyBecomePilotData {
+  image: WhyBecomePilotImage;
+  upperHeader?: string;
+  upperHeading?: string;
+  title: string;
+  description?: string;
+  descriptions?: string[];
+  bullets?: WhyBecomePilotBullet[];
+  button?: WhyBecomePilotButton;
+}
+
+export interface Props {
+  content?: WhyBecomePilotData;
+  data?: WhyBecomePilotData;
+}
+
+const defaultContent: WhyBecomePilotData = {
+  upperHeader: "Why Become a Pilot?",
+  title: "A Life-Changing Skill, Experience, and Career",
+  description:
+    "Most people dream of flying, but only a few decide to take the first step. Becoming a pilot opens a world of adventure, community, and opportunity.",
+  descriptions: [
+    "Flying gives you a sense of freedom and confidence unlike anything else. The aviation community is welcoming, passionate, and driven by purpose. With a global pilot shortage, now is one of the best times in history to begin training.",
+    "Airlines, charter services, and corporate aviation all need skilled pilots. Whether you want to fly for fun or pursue a full aviation career, learning to fly is a rewarding journey that transforms your life.",
+  ],
+  bullets: [
+    {
+      title: "The Pilot Lifestyle",
+      description:
+        "Experience breathtaking views, weekend adventures, and the confidence that comes with mastering a complex skill.",
+      icon: "Plane",
+    },
+    {
+      title: "Strong Career Opportunities",
+      description:
+        "Airlines, corporate aviation, cargo, charter, medical flights — pilots are in demand everywhere.",
+      icon: "TrendingUp",
+    },
+    {
+      title: "A Global Community",
+      description:
+        "Join a supportive community of aviators who share your passion and celebrate your progress.",
+      icon: "Users",
+    },
+  ],
+  image: {
+    src: "/src/assets/stock/stock_Plane-pilot-ground-standing_maria-teneva-m2MIMI7VS4Y-unsplash.jpg",
+    alt: "Pilot standing near airplane by Maria Teneva",
+  },
+};
+
+const iconMap: Record<string, string> = {
+  Clock: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+  TrendingUp: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>`,
+  Briefcase: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`,
+  Plane: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>`,
+  Users: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path stroke-linecap="round" stroke-linejoin="round" d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+  Shield: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"></path></svg>`,
+  ShieldCheck: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"></path></svg>`,
+  Award: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>`,
+  DollarSign: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path stroke-linecap="round" stroke-linejoin="round" d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+  CreditCard: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>`,
+  Check: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+};
+
+function getIconSvg(iconName?: string): string {
+  if (!iconName) return iconMap.Check;
+  if (iconMap[iconName]) return iconMap[iconName];
+  if (iconName.startsWith("<svg") || iconName.startsWith("<path") || iconName.startsWith("M")) {
+    if (iconName.startsWith("<svg")) return iconName;
+    return `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="${iconName}" /></svg>`;
+  }
+  return iconMap.Check;
+}
+
+const { content, data } = Astro.props;
+const incoming = content || data;
+
+const sectionData = incoming || defaultContent;
+---
+
+<section>
+  <div class="bg-stone-100 bg-logo">
+    <div class="flex-1 text-primary-600 pt-12">
+      <div
+        class="flex flex-col px-8 py-12 sm:px-12 lg:py-20 text-center items-center"
+        data-aos="zoom-in"
+        data-aos-delay="300"
+        data-aos-duration="1500"
+      >
+        {
+          (sectionData.upperHeader || sectionData.upperHeading) && (
+            <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase text-accent-700 bg-accent-500/10 px-4 py-1.5 rounded-full mb-4">
+              {sectionData.upperHeader || sectionData.upperHeading}
+            </span>
+          )
+        }
+        <h2
+          class="text-4xl font-semibold tracking-tight text-pretty sm:text-5xl text-primary-900"
+        >
+          {sectionData.title}
+        </h2>
+        {
+          sectionData.description && (
+            <p
+              class="mt-6 text-lg text-pretty font-light max-w-2xl text-stone-600 leading-relaxed"
+              data-aos="fade-left"
+            >
+              {sectionData.description}
+            </p>
+          )
+        }
+
+        {
+          sectionData.bullets && sectionData.bullets.length > 0 && (
+            <div
+              class="grid grid-cols-1 md:grid-cols-3 gap-6 my-10 max-w-5xl w-full"
+              data-aos="zoom-in"
+              data-aos-delay="300"
+              data-aos-duration="1500"
+            >
+              {sectionData.bullets.map((bullet: WhyBecomePilotBullet) => (
+                <div class="group flex flex-col items-center text-center p-8 rounded-3xl bg-white shadow-md border border-stone-200/80 hover:border-accent-500/40 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+                  <div class="w-14 h-14 rounded-2xl bg-stone-100 text-primary-800 flex items-center justify-center mb-5 shadow-inner group-hover:bg-accent-500 group-hover:text-white transition-all duration-300">
+                    <Fragment set:html={getIconSvg(bullet.icon)} />
+                  </div>
+                  <h3 class="font-bold text-lg text-primary-900 mb-2 uppercase tracking-wide">
+                    {bullet.title}
+                  </h3>
+                  <p class="text-sm text-stone-600 leading-relaxed max-w-xs">
+                    {bullet.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          sectionData.image && (
+            <ImageComp
+              src={sectionData.image.src}
+              alt={sectionData.image.alt}
+              classes="rounded-2xl object-cover max-w-lg mt-8 shadow-xl shadow-black/20 border border-stone-200"
+            />
+          )
+        }
+
+        {
+          sectionData.descriptions && sectionData.descriptions.length > 0 && (
+            <div class="grid gap-6 mt-8 lg:grid-cols-2 text-justify py-4 border-y border-primary-800/20 max-w-4xl">
+              {sectionData.descriptions.map((desc: string) => (
+                <p
+                  class="mt-2 text-pretty text-base font-light text-stone-700 leading-relaxed"
+                  data-aos="fade-left"
+                >
+                  {desc}
+                </p>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          sectionData.button && (
+            <div class="mt-10 flex">
+              <a href={sectionData.button.href} class="btn-accent btn-middle">
+                {sectionData.button.text}
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
